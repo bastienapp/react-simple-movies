@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Movie from "models/Movie";
+import Movie from "./Movie";
 import "./MovieCard.css";
 
 const MovieCard = (props) => {
@@ -9,7 +9,7 @@ const MovieCard = (props) => {
       <ul>
         <li>
           <a
-            href={"https://www.imdb.com/title/" + props.movie.id + "/"}
+            href={`https://www.imdb.com/title/${props.movie.id}/`}
             target="_blank"
           >
             {props.movie.title}
