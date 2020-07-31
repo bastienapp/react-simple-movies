@@ -11,6 +11,7 @@ const MovieCard = (props) => {
           <a
             href={`https://www.imdb.com/title/${props.movie.id}/`}
             target="_blank"
+            rel="noreferrer"
           >
             {props.movie.title}
           </a>
