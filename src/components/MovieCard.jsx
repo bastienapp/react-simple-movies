@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Movie from './Movie';
-import './MovieCard.css';
 
 const MovieCard = (props) => {
   const { movie } = props;
@@ -11,19 +11,12 @@ const MovieCard = (props) => {
     <div className="MovieCard">
       <ul>
         <li>
-          <a
-            href={`https://www.imdb.com/title/${movie.id}/`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {movie.title}
-          </a>
+          <Router>
+            <Link to={`/movie/${movie.id}`}>
+              <img src={movie.poster} alt={movie.title} />
+            </Link>
+          </Router>
         </li>
-        <li>
-          <img src={movie.poster} alt={movie.title} />
-        </li>
-        <li>{movie.director}</li>
-        <li>{movie.year}</li>
         <li>
           <button
             type="button"
