@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MovieApi from './MovieApi';
 
@@ -25,6 +26,9 @@ const MovieCard = (props) => {
           >
             Go to IMDB
           </a>
+        </li>
+        <li>
+          <Link to="/">Return to movie&apos;s list</Link>
         </li>
       </ul>
     </div>

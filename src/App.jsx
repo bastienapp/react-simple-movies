@@ -9,8 +9,6 @@ const App = () => {
       <div className="App">
         <Switch>
           <Route exact path="/" component={MovieList} />
-        </Switch>
-        <Switch>
           <Route exact path="/movie/:id" component={MovieInfos} />
         </Switch>
       </div>

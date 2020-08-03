@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Movie from './Movie';
 
@@ -11,11 +11,9 @@ const MovieCard = (props) => {
     <div className="MovieCard">
       <ul>
         <li>
-          <Router>
-            <Link to={`/movie/${movie.id}`}>
-              <img src={movie.poster} alt={movie.title} />
-            </Link>
-          </Router>
+          <Link to={`/movie/${movie.id}`}>
+            <img src={movie.poster} alt={movie.title} />
+          </Link>
         </li>
         <li>
           <button
