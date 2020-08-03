@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MovieApi from './MovieApi';
@@ -9,6 +9,8 @@ const MovieCard = (props) => {
   const { id } = params;
 
   const movie = MovieApi.findById(id);
+
+  const [favourite, setFavourite] = useState(movie.favourite);
 
   return (
     <div className="MovieCard">
@@ -26,6 +28,17 @@ const MovieCard = (props) => {
           >
             Go to IMDB
           </a>
+        </li>
+        <li>
+          <button
+            type="button"
+            onClick={() => {
+              MovieApi.addToFavourites(movie.id);
+              setFavourite(!favourite);
+            }}
+          >
+            {favourite ? 'Remove from favourite' : 'Add to favourite'}
+          </button>
         </li>
         <li>
           <Link to="/">Return to movie&apos;s list</Link>

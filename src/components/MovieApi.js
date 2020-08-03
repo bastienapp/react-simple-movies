@@ -36,9 +36,16 @@ const MovieApi = {
   },
 
   findById: (id) => {
-    return movies.filter((movie) => {
+    return movies.find((movie) => {
       return movie.id === id;
-    })[0];
+    });
+  },
+
+  addToFavourites: (id) => {
+    const update = movies.find((movie) => {
+      return movie.id === id;
+    });
+    update.favourite = true;
   },
 };
 
