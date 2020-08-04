@@ -7,7 +7,6 @@ class Movie {
     this.rating = rating;
     this.poster = poster;
     this.plot = plot;
-    this.favourite = false;
   }
 }
 

@@ -10,7 +10,7 @@ const MovieCard = (props) => {
 
   const movie = MovieApi.findById(id);
 
-  const [favourite, setFavourite] = useState(movie.favourite);
+  const [favourite, setFavourite] = useState(MovieApi.isFavorite(movie));
 
   return (
     <div className="MovieCard">
@@ -33,7 +33,7 @@ const MovieCard = (props) => {
           <button
             type="button"
             onClick={() => {
-              MovieApi.addToFavourites(movie.id);
+              MovieApi.toggleFavourite(movie);
               setFavourite(!favourite);
             }}
           >
