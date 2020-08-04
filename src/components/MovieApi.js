@@ -30,7 +30,7 @@ const movies = [
   ),
 ];
 
-let favourites = [];
+const favourites = [];
 
 const MovieApi = {
   findAll: () => {
@@ -47,7 +47,7 @@ const MovieApi = {
 
   toggleFavourite: (movie) => {
     if (favourites.includes(movie)) {
-      favourites = favourites.filter((search) => search !== movie);
+      favourites.splice(favourites.indexOf(movie), 1);
     } else {
       favourites.push(movie);
     }
