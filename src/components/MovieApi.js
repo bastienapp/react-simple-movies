@@ -30,22 +30,27 @@ const movies = [
   ),
 ];
 
+let favourites = [];
+
 const MovieApi = {
   findAll: () => {
     return movies;
   },
 
   findById: (id) => {
-    return movies.find((movie) => {
-      return movie.id === id;
-    });
+    return movies.find((movie) => movie.id === id);
   },
 
-  addToFavourites: (id) => {
-    const update = movies.find((movie) => {
-      return movie.id === id;
-    });
-    update.favourite = true;
+  isFavorite: (movie) => {
+    return favourites.includes(movie);
+  },
+
+  toggleFavourite: (movie) => {
+    if (favourites.includes(movie)) {
+      favourites = favourites.filter((search) => search !== movie);
+    } else {
+      favourites.push(movie);
+    }
   },
 };
 
