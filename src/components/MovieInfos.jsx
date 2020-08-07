@@ -8,35 +8,33 @@ const MovieCard = (props) => {
   const { match } = props;
   const { params } = match;
   const { id } = params;
-  const [mounted, setMounted] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(false);
   const [favourite, setFavourite] = useState(false);
 
   useEffect(() => {
-    async function callMovies() {
-      if (!loaded && !mounted) {
-        setMounted(true);
-        MovieApi.findById(id).then((item) => {
-          if (item instanceof Error) {
-            setError(true);
-          } else {
-            setMovie(item);
-            setFavourite(MovieFavourites.isFavorite(item));
-            setLoaded(true);
-            setMounted(false);
-          }
-        });
+    let cancelled = false;
+    MovieApi.findById(id).then((item) => {
+      if (cancelled) {
+        return;
       }
-    }
-    callMovies();
-  }, [id, loaded, mounted]);
+      if (item instanceof Error) {
+        setError(true);
+      } else {
+        setMovie(item);
+        setFavourite(MovieFavourites.isFavorite(item));
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [id]);
 
   if (error) {
     return <div>Error!</div>;
   }
-  return loaded ? (
+  return movie !== null ? (
     <div className="MovieCard">
       <ul>
         <li>
