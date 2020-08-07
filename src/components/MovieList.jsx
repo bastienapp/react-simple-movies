@@ -3,33 +3,31 @@ import MovieApi from './MovieApi';
 import MovieCard from './MovieCard';
 
 const MovieList = () => {
-  const [mounted, setMounted] = useState(false);
-  const [loaded, setLoaded] = useState(false);
   const [error, setError] = useState(false);
   const [movies, setMovies] = useState([]);
 
   useEffect(() => {
-    async function callMovies() {
-      if (!loaded && !mounted) {
-        setMounted(true);
-        MovieApi.findAll().then((items) => {
-          if (items instanceof Error) {
-            setError(true);
-          } else {
-            setMovies(items);
-            setLoaded(true);
-            setMounted(false);
-          }
-        });
+    let cancelled = false;
+    MovieApi.findAll().then((items) => {
+      if (cancelled) {
+        return;
       }
-    }
-    callMovies();
-  }, [loaded, mounted]);
+      if (items instanceof Error) {
+        setError(true);
+      } else {
+        setMovies(items);
+      }
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (error) {
     return <div>Error!</div>;
   }
-  return loaded ? (
+  return movies.length > 0 ? (
     <div className="MovieList">
       {movies.map((movie) => (
         <MovieCard key={movie.id} movie={movie} />
