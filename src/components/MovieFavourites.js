@@ -8,11 +8,11 @@ const favourites = localStorage.getItem('favourites')
 
 class MovieFavourites {
   static isFavorite(movie) {
-    return favourites.find((obj) => obj.id === movie.id);
+    return favourites.find((favourite) => favourite.id === movie.id);
   }
 
   static toggleFavourite(movie) {
-    const i = favourites.findIndex((obj) => obj.id === movie.id);
+    const i = favourites.findIndex((favourite) => favourite.id === movie.id);
     if (i > -1) {
       favourites.splice(i, 1);
     } else {

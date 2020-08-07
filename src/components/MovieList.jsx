@@ -8,14 +8,18 @@ const MovieList = () => {
 
   useEffect(() => {
     let cancelled = false;
-    MovieApi.findAll().then((items) => {
+    MovieApi.findAll().then((allMovies) => {
       if (cancelled) {
         return;
       }
-      if (items === null || items instanceof Error) {
+      if (
+        allMovies === null ||
+        allMovies.length === 0 ||
+        allMovies instanceof Error
+      ) {
         setError(true);
       } else {
-        setMovies(items);
+        setMovies(allMovies);
       }
     });
 
