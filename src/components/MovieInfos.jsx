@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import MovieApi from './MovieApi';
 import MovieFavourites from './MovieFavourites';
 
-const MovieCard = (props) => {
+const MovieInfos = (props) => {
   const { match } = props;
   const { params } = match;
   const { id } = params;
@@ -14,15 +14,15 @@ const MovieCard = (props) => {
 
   useEffect(() => {
     let cancelled = false;
-    MovieApi.findById(id).then((item) => {
+    MovieApi.findById(id).then((oneMovie) => {
       if (cancelled) {
         return;
       }
-      if (item === null || item instanceof Error || !item.id) {
+      if (oneMovie === null || oneMovie instanceof Error || !oneMovie.id) {
         setError(true);
       } else {
-        setMovie(item);
-        setFavourite(MovieFavourites.isFavorite(item));
+        setMovie(oneMovie);
+        setFavourite(MovieFavourites.isFavorite(oneMovie));
       }
     });
 
@@ -32,7 +32,7 @@ const MovieCard = (props) => {
   }, [id]);
 
   return (
-    <div className="MovieCard">
+    <div className="MovieInfos">
       {!error || <div>Error!</div>}
       {movie === null || (
         <ul>
@@ -69,7 +69,7 @@ const MovieCard = (props) => {
   );
 };
 
-MovieCard.propTypes = {
+MovieInfos.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -77,4 +77,4 @@ MovieCard.propTypes = {
   }).isRequired,
 };
 
-export default MovieCard;
+export default MovieInfos;
