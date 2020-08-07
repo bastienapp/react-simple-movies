@@ -18,7 +18,7 @@ const MovieCard = (props) => {
       if (cancelled) {
         return;
       }
-      if (item instanceof Error) {
+      if (item === null || item instanceof Error || !item.id) {
         setError(true);
       } else {
         setMovie(item);
@@ -31,44 +31,41 @@ const MovieCard = (props) => {
     };
   }, [id]);
 
-  if (error) {
-    return <div>Error!</div>;
-  }
-  return movie !== null ? (
+  return (
     <div className="MovieCard">
-      <ul>
-        <li>
-          <img src={movie.poster} alt={movie.title} />
-        </li>
-        <li>{movie.director}</li>
-        <li>{movie.year}</li>
-        <li>
-          <a
-            href={`https://www.imdb.com/title/${movie.id}/`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Go to IMDB
-          </a>
-        </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => {
-              MovieFavourites.toggleFavourite(movie);
-              setFavourite(!favourite);
-            }}
-          >
-            {favourite ? 'Remove from favourite' : 'Add to favourite'}
-          </button>
-        </li>
-        <li>
-          <Link to="/">Return to movie&apos;s list</Link>
-        </li>
-      </ul>
+      {!error || <div>Error!</div>}
+      {movie === null || (
+        <ul>
+          <li>
+            <img src={movie.poster} alt={movie.title} />
+          </li>
+          <li>{movie.director}</li>
+          <li>{movie.year}</li>
+          <li>
+            <a
+              href={`https://www.imdb.com/title/${movie.id}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Go to IMDB
+            </a>
+          </li>
+          <li>
+            <button
+              type="button"
+              onClick={() => {
+                MovieFavourites.toggleFavourite(movie);
+                setFavourite(!favourite);
+              }}
+            >
+              {favourite ? 'Remove from favourite' : 'Add to favourite'}
+            </button>
+          </li>
+        </ul>
+      )}
+      {movie !== null || error || <div>loading</div>}
+      <Link to="/">Return to movie&apos;s list</Link>
     </div>
-  ) : (
-    <div>Loading...</div>
   );
 };
 
