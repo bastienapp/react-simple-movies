@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import MovieApi from './MovieApi';
+import MovieFavourites from './MovieFavourites';
 
 const MovieCard = (props) => {
   const { match } = props;
   const { params } = match;
   const { id } = params;
+  const [mounted, setMounted] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+  const [movie, setMovie] = useState(null);
+  const [favourite, setFavourite] = useState(false);
 
-  const movie = MovieApi.findById(id);
+  useEffect(() => {
+    async function callMovies() {
+      if (!loaded && !mounted) {
+        setMounted(true);
+        MovieApi.findById(id).then((item) => {
+          setMovie(item);
+          setFavourite(MovieFavourites.isFavorite(item));
+          setLoaded(true);
+          setMounted(false);
+        });
+      }
+    }
+    callMovies();
+  }, [id, loaded, mounted]);
 
-  const [favourite, setFavourite] = useState(MovieApi.isFavorite(movie));
-
-  return (
+  return loaded ? (
     <div className="MovieCard">
       <ul>
         <li>
@@ -33,7 +49,7 @@ const MovieCard = (props) => {
           <button
             type="button"
             onClick={() => {
-              MovieApi.toggleFavourite(movie);
+              MovieFavourites.toggleFavourite(movie);
               setFavourite(!favourite);
             }}
           >
@@ -45,6 +61,8 @@ const MovieCard = (props) => {
         </li>
       </ul>
     </div>
+  ) : (
+    <div>Loading...</div>
   );
 };
 
