@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Movie from './Movie';
 
-const API_URL = 'http://www.omdbapi.com/';
+const API_URL = 'https://www.omdbapi.com/';
 const API_KEY = 'b5c85bc6';
 
 class MovieApi {
@@ -34,7 +34,8 @@ class MovieApi {
         axios.spread((...responses) =>
           responses.map(({ data }) => this.parseData(data))
         )
-      );
+      )
+      .catch((error) => error);
     return movies;
   }
 
@@ -47,7 +48,8 @@ class MovieApi {
         },
       })
       .then((response) => response.data)
-      .then((data) => this.parseData(data));
+      .then((data) => this.parseData(data))
+      .catch((error) => error);
     return movie;
   }
 
