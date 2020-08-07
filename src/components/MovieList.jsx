@@ -12,7 +12,7 @@ const MovieList = () => {
       if (cancelled) {
         return;
       }
-      if (items instanceof Error) {
+      if (items === null || items instanceof Error) {
         setError(true);
       } else {
         setMovies(items);
@@ -24,17 +24,13 @@ const MovieList = () => {
     };
   }, []);
 
-  if (error) {
-    return <div>Error!</div>;
-  }
-  return movies.length > 0 ? (
+  return (
     <div className="MovieList">
-      {movies.map((movie) => (
-        <MovieCard key={movie.id} movie={movie} />
-      ))}
+      {!error || <div>Error</div>}
+      {movies.length === 0 ||
+        movies.map((movie) => <MovieCard key={movie.id} movie={movie} />)}
+      {movies.length !== 0 || error || <div>Loading...</div>}
     </div>
-  ) : (
-    <div>Loading...</div>
   );
 };
 
