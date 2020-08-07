@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import MovieApi from './MovieApi';
 import MovieFavourites from './MovieFavourites';
 
-const MovieCard = (props) => {
+const MovieInfos = (props) => {
   const { match } = props;
   const { params } = match;
   const { id } = params;
@@ -14,15 +14,15 @@ const MovieCard = (props) => {
 
   useEffect(() => {
     let cancelled = false;
-    MovieApi.findById(id).then((item) => {
+    MovieApi.findById(id).then((oneMovie) => {
       if (cancelled) {
         return;
       }
-      if (item instanceof Error) {
+      if (oneMovie === null || oneMovie instanceof Error || !oneMovie.id) {
         setError(true);
       } else {
-        setMovie(item);
-        setFavourite(MovieFavourites.isFavorite(item));
+        setMovie(oneMovie);
+        setFavourite(MovieFavourites.isFavorite(oneMovie));
       }
     });
 
@@ -31,48 +31,45 @@ const MovieCard = (props) => {
     };
   }, [id]);
 
-  if (error) {
-    return <div>Error!</div>;
-  }
-  return movie !== null ? (
-    <div className="MovieCard">
-      <ul>
-        <li>
-          <img src={movie.poster} alt={movie.title} />
-        </li>
-        <li>{movie.director}</li>
-        <li>{movie.year}</li>
-        <li>
-          <a
-            href={`https://www.imdb.com/title/${movie.id}/`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Go to IMDB
-          </a>
-        </li>
-        <li>
-          <button
-            type="button"
-            onClick={() => {
-              MovieFavourites.toggleFavourite(movie);
-              setFavourite(!favourite);
-            }}
-          >
-            {favourite ? 'Remove from favourite' : 'Add to favourite'}
-          </button>
-        </li>
-        <li>
-          <Link to="/">Return to movie&apos;s list</Link>
-        </li>
-      </ul>
+  return (
+    <div className="MovieInfos">
+      {!error || <div>Error!</div>}
+      {movie === null || (
+        <ul>
+          <li>
+            <img src={movie.poster} alt={movie.title} />
+          </li>
+          <li>{movie.director}</li>
+          <li>{movie.year}</li>
+          <li>
+            <a
+              href={`https://www.imdb.com/title/${movie.id}/`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Go to IMDB
+            </a>
+          </li>
+          <li>
+            <button
+              type="button"
+              onClick={() => {
+                MovieFavourites.toggleFavourite(movie);
+                setFavourite(!favourite);
+              }}
+            >
+              {favourite ? 'Remove from favourite' : 'Add to favourite'}
+            </button>
+          </li>
+        </ul>
+      )}
+      {movie !== null || error || <div>loading</div>}
+      <Link to="/">Return to movie&apos;s list</Link>
     </div>
-  ) : (
-    <div>Loading...</div>
   );
 };
 
-MovieCard.propTypes = {
+MovieInfos.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
       id: PropTypes.string,
@@ -80,4 +77,4 @@ MovieCard.propTypes = {
   }).isRequired,
 };
 
-export default MovieCard;
+export default MovieInfos;
