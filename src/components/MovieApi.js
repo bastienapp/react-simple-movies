@@ -1,56 +1,45 @@
 import axios from 'axios';
 import Movie from './Movie';
 
-const API_URL = 'https://www.omdbapi.com/';
 const API_KEY = 'b5c85bc6';
+const API = axios.create({
+  baseURL: `https://www.omdbapi.com/?apikey=${API_KEY}`,
+});
 
 class MovieApi {
   static async findAll() {
-    const callBladeRunner = axios.get(API_URL, {
+    const callBladeRunner = API.get('', {
       params: {
         t: 'blade runner',
         type: 'movie',
-        apikey: API_KEY,
       },
     });
-    const callAlien = axios.get(API_URL, {
+    const callAlien = API.get('', {
       params: {
         t: 'alien',
         type: 'movie',
-        apikey: API_KEY,
       },
     });
-    const callTheThing = axios.get(API_URL, {
+    const callTheThing = API.get('', {
       params: {
         t: 'the thing',
         type: 'movie',
-        apikey: API_KEY,
       },
     });
 
-    const movies = await axios
+    const responses = await axios
       .all([callBladeRunner, callAlien, callTheThing])
-      .then(
-        axios.spread((...responses) =>
-          responses.map(({ data }) => this.parseData(data))
-        )
-      )
       .catch((error) => error);
-    return movies;
+    return responses.map(({ data }) => this.parseData(data));
   }
 
   static async findById(id) {
-    const movie = await axios
-      .get(API_URL, {
-        params: {
-          i: id,
-          apikey: API_KEY,
-        },
-      })
-      .then((response) => response.data)
-      .then((data) => this.parseData(data))
-      .catch((error) => error);
-    return movie;
+    const { data } = await API.get('', {
+      params: {
+        i: id,
+      },
+    }).catch((error) => error);
+    return this.parseData(data);
   }
 
   static parseData(data) {
