@@ -26,6 +26,7 @@ const MovieList = () => {
     });
 
     return () => {
+      MovieApi.cancel('User interrupted movie list loading');
       cancelled = true;
     };
   }, []);

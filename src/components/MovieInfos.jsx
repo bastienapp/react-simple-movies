@@ -27,6 +27,7 @@ const MovieInfos = (props) => {
     });
 
     return () => {
+      MovieApi.cancel('User interrupted movie loading');
       cancelled = true;
     };
   }, [id]);
