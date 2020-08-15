@@ -33,7 +33,9 @@ class MovieApi {
       .all([callBladeRunner, callAlien, callTheThing])
       .catch((error) => error);
     cancelToken = undefined;
-    return responses.map(({ data }) => this.parseData(data));
+    return responses instanceof Error
+      ? null
+      : responses.map(({ data }) => this.parseData(data));
   }
 
   static async findById(id) {
