@@ -5,9 +5,11 @@ import MovieApi from './MovieApi';
 import MovieFavourites from './MovieFavourites';
 
 const MovieInfos = (props) => {
-  const { match } = props;
-  const { params } = match;
-  const { id } = params;
+  const {
+    match: {
+      params: { id },
+    },
+  } = props;
   const [movie, setMovie] = useState(null);
   const [error, setError] = useState(false);
   const [favourite, setFavourite] = useState(false);

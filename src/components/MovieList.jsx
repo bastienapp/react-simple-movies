@@ -32,8 +32,9 @@ const MovieList = () => {
   }, []);
 
   const filterMovies = (event) => {
-    const { target } = event;
-    const { value } = target;
+    const {
+      target: { value },
+    } = event;
     setFilter(value);
   };
 
